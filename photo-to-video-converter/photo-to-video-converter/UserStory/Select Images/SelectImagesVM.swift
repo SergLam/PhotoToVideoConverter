@@ -7,3 +7,9 @@
 //
 
 import Foundation
+import Photos
+
+class SelectImagesVM {
+    
+    var images: [PHAsset] = []
+}

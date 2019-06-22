@@ -25,7 +25,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright © 2019 serglam. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RFB-qy-QPa">
-                                <rect key="frame" x="10" y="841" width="394" height="21"/>
+                                <rect key="frame" x="10" y="831" width="394" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -39,7 +39,7 @@
                             <constraint firstItem="p11-4t-aFM" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="Qab-wQ-4bq"/>
                             <constraint firstItem="p11-4t-aFM" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="bc2-ci-eKx"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="RFB-qy-QPa" secondAttribute="trailing" constant="10" id="nPP-0v-sQU"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="RFB-qy-QPa" secondAttribute="bottom" id="qbh-QA-Zm3"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="RFB-qy-QPa" secondAttribute="bottom" constant="10" id="qbh-QA-Zm3"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="p11-4t-aFM" secondAttribute="trailing" constant="10" id="qru-ww-UBs"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
