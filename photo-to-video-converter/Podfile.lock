@@ -1,16 +1,24 @@
 PODS:
+  - DZNEmptyDataSet (1.8.1)
+  - SnapKit (5.0.0)
   - TLPhotoPicker (1.8.9)
 
 DEPENDENCIES:
+  - DZNEmptyDataSet
+  - SnapKit (~> 5.0.0)
   - TLPhotoPicker
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - DZNEmptyDataSet
+    - SnapKit
     - TLPhotoPicker
 
 SPEC CHECKSUMS:
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
   TLPhotoPicker: 9bf255c116129bc5d709b4cc8b42b3542e89e841
 
-PODFILE CHECKSUM: 2e52e94d15c00507acf524c50099ed3996078042
+PODFILE CHECKSUM: 22f78ed60b42881794eed6ddcda539c2ecc32542
 
 COCOAPODS: 1.7.2

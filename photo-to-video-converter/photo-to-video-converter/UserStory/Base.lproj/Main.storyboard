@@ -49,7 +49,7 @@
         <!--Selected animation-->
         <scene sceneID="dHV-Lg-4mc">
             <objects>
-                <viewController id="OFU-8a-RoO" customClass="SelectImagesVC" customModule="photo_to_video_converter" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="OFU-8a-RoO" customClass="SelectAnimationVC" customModule="photo_to_video_converter" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="UHh-qO-OL8">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -57,12 +57,15 @@
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wxg-Qp-RKw">
                                 <rect key="frame" x="0.0" y="64" width="320" height="142"/>
                             </pickerView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HHq-cj-Rbt">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imageA.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="HHq-cj-Rbt">
                                 <rect key="frame" x="0.0" y="235" width="320" height="284"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Cw-SG-bxP">
                                 <rect key="frame" x="110" y="206" width="100" height="29"/>
                                 <state key="normal" title="ViewTransition"/>
+                                <connections>
+                                    <action selector="showTransition:" destination="OFU-8a-RoO" eventType="touchUpInside" id="Yhl-Bk-NGF"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -82,6 +85,11 @@
                         <viewLayoutGuide key="safeArea" id="jGi-pC-ccd"/>
                     </view>
                     <navigationItem key="navigationItem" title="Selected animation" id="APc-1z-zhv"/>
+                    <connections>
+                        <outlet property="imageView" destination="HHq-cj-Rbt" id="dZK-Bo-fwB"/>
+                        <outlet property="pickerView" destination="Wxg-Qp-RKw" id="uBS-ee-BIp"/>
+                        <outlet property="viewTransitionButton" destination="6Cw-SG-bxP" id="o8z-zY-CO5"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mx4-09-GWf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -112,21 +120,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QUC-Ao-M27">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="exportIcon" translatesAutoresizingMaskIntoConstraints="NO" id="QUC-Ao-M27">
                                 <rect key="frame" x="0.0" y="149.5" width="320" height="284"/>
                                 <gestureRecognizers/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="WOx-u1-Y04" appends="YES" id="0Qh-6k-po1"/>
-                                </connections>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photos count:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O53-KO-r8G">
-                                <rect key="frame" x="10" y="80" width="300" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Photos count: 0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O53-KO-r8G">
+                                <rect key="frame" x="10" y="72" width="300" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected transition:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8vc-vK-6W5">
-                                <rect key="frame" x="10" y="119.5" width="300" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected transition: moveIn-fromTop" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8vc-vK-6W5">
+                                <rect key="frame" x="10" y="100.5" width="300" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -137,25 +142,40 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CAc-9G-6me">
                                         <rect key="frame" x="0.0" y="0.0" width="160" height="30"/>
                                         <state key="normal" title="Convert Video"/>
+                                        <connections>
+                                            <action selector="didTapConvertVideo:" destination="f4P-j8-96G" eventType="touchUpInside" id="LlQ-Qz-NY7"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4cu-Xn-sqd">
                                         <rect key="frame" x="160" y="0.0" width="160" height="30"/>
                                         <state key="normal" title="Export Video"/>
+                                        <connections>
+                                            <action selector="didTapExportVideo:" destination="f4P-j8-96G" eventType="touchUpInside" id="J5D-zq-H0o"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected duration: 1.0s" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idD-JH-TrB">
+                                <rect key="frame" x="10" y="129" width="300" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="idD-JH-TrB" firstAttribute="leading" secondItem="aFt-e6-UJE" secondAttribute="leading" constant="10" id="3tm-6e-EzE"/>
                             <constraint firstItem="QUC-Ao-M27" firstAttribute="leading" secondItem="aFt-e6-UJE" secondAttribute="leading" id="5nd-44-llz"/>
                             <constraint firstItem="8vc-vK-6W5" firstAttribute="leading" secondItem="aFt-e6-UJE" secondAttribute="leading" constant="10" id="6On-P2-CZp"/>
                             <constraint firstItem="aFt-e6-UJE" firstAttribute="trailing" secondItem="QUC-Ao-M27" secondAttribute="trailing" id="70G-Cl-j6s"/>
                             <constraint firstItem="aFt-e6-UJE" firstAttribute="trailing" secondItem="TkE-gH-jj3" secondAttribute="trailing" id="8c9-WW-t62"/>
                             <constraint firstItem="TkE-gH-jj3" firstAttribute="leading" secondItem="aFt-e6-UJE" secondAttribute="leading" id="C6E-SO-Sdc"/>
+                            <constraint firstItem="idD-JH-TrB" firstAttribute="top" secondItem="8vc-vK-6W5" secondAttribute="bottom" constant="8" id="Cey-sZ-Wn9"/>
                             <constraint firstItem="aFt-e6-UJE" firstAttribute="trailing" secondItem="8vc-vK-6W5" secondAttribute="trailing" constant="10" id="Gbh-4l-6z6"/>
-                            <constraint firstItem="O53-KO-r8G" firstAttribute="top" secondItem="aFt-e6-UJE" secondAttribute="top" constant="16" id="T1c-bM-3T9"/>
+                            <constraint firstItem="aFt-e6-UJE" firstAttribute="trailing" secondItem="idD-JH-TrB" secondAttribute="trailing" constant="10" id="JuD-yU-tcc"/>
+                            <constraint firstItem="O53-KO-r8G" firstAttribute="top" secondItem="aFt-e6-UJE" secondAttribute="top" constant="8" id="T1c-bM-3T9"/>
                             <constraint firstItem="O53-KO-r8G" firstAttribute="leading" secondItem="aFt-e6-UJE" secondAttribute="leading" constant="10" id="WOi-tT-40T"/>
-                            <constraint firstItem="8vc-vK-6W5" firstAttribute="top" secondItem="O53-KO-r8G" secondAttribute="bottom" constant="19" id="YYo-LP-jhe"/>
+                            <constraint firstItem="8vc-vK-6W5" firstAttribute="top" secondItem="O53-KO-r8G" secondAttribute="bottom" constant="8" id="YYo-LP-jhe"/>
                             <constraint firstItem="QUC-Ao-M27" firstAttribute="height" secondItem="Osa-wI-LAQ" secondAttribute="height" multiplier="0.5" id="bC7-KM-30s"/>
                             <constraint firstItem="aFt-e6-UJE" firstAttribute="bottom" secondItem="TkE-gH-jj3" secondAttribute="bottom" constant="20" id="ceL-jz-oHs"/>
                             <constraint firstItem="aFt-e6-UJE" firstAttribute="trailing" secondItem="O53-KO-r8G" secondAttribute="trailing" constant="10" id="kno-yu-SFU"/>
@@ -165,6 +185,12 @@
                         <viewLayoutGuide key="safeArea" id="aFt-e6-UJE"/>
                     </view>
                     <navigationItem key="navigationItem" title="Export options" id="iZ8-XE-ZqH"/>
+                    <connections>
+                        <outlet property="photosCountLabel" destination="O53-KO-r8G" id="Ctf-vt-5xZ"/>
+                        <outlet property="selectedDurationLabel" destination="idD-JH-TrB" id="ARi-iP-dFw"/>
+                        <outlet property="selectedTransitionLabel" destination="8vc-vK-6W5" id="03P-Jo-kYP"/>
+                        <outlet property="videoPreviewImage" destination="QUC-Ao-M27" id="UD0-aC-wf3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cKx-t0-yUV" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="WOx-u1-Y04"/>
@@ -206,7 +232,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="CC6-Za-uQr">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SelectedImageCell" id="MI2-XE-s2T" customClass="SelectedImageCell" customModule="photo_to_video_converter" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -244,6 +270,7 @@
     </scenes>
     <resources>
         <image name="exportIcon" width="30" height="30"/>
+        <image name="imageA.jpg" width="4000" height="3000"/>
         <image name="imageIcon" width="30" height="30"/>
         <image name="layersIcon" width="30" height="30"/>
     </resources>
