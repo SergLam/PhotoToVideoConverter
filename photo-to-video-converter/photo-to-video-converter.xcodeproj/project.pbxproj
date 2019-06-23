@@ -26,6 +26,8 @@
 		7C04450922BE5A8000D31A58 /* VideoConverterVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C04450822BE5A8000D31A58 /* VideoConverterVM.swift */; };
 		7C04450B22BE5BD800D31A58 /* SelectAnimationVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C04450A22BE5BD800D31A58 /* SelectAnimationVM.swift */; };
 		7C04450D22BE5CB600D31A58 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C04450C22BE5CB600D31A58 /* UserDefaultsManager.swift */; };
+		7CCA44A622BF94AA00F9AAA5 /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA44A522BF94AA00F9AAA5 /* LocalFileManager.swift */; };
+		7CCA44A822C016C500F9AAA5 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA44A722C016C500F9AAA5 /* UIImage+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +53,8 @@
 		7C04450822BE5A8000D31A58 /* VideoConverterVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoConverterVM.swift; sourceTree = "<group>"; };
 		7C04450A22BE5BD800D31A58 /* SelectAnimationVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAnimationVM.swift; sourceTree = "<group>"; };
 		7C04450C22BE5CB600D31A58 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
+		7CCA44A522BF94AA00F9AAA5 /* LocalFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
+		7CCA44A722C016C500F9AAA5 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		CB4FE5C0D964F2118F31DC66 /* Pods_photo_to_video_converter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_photo_to_video_converter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -161,6 +165,7 @@
 			children = (
 				7C0444FA22BE44E200D31A58 /* AlertPresenter.swift */,
 				7C04450C22BE5CB600D31A58 /* UserDefaultsManager.swift */,
+				7CCA44A522BF94AA00F9AAA5 /* LocalFileManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -178,6 +183,7 @@
 			children = (
 				7C04450022BE4CAE00D31A58 /* PHAsset+Ext.swift */,
 				7C04450222BE54FA00D31A58 /* UIScreen+Ext.swift */,
+				7CCA44A722C016C500F9AAA5 /* UIImage+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -316,6 +322,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CCA44A822C016C500F9AAA5 /* UIImage+Ext.swift in Sources */,
 				7C04450122BE4CAE00D31A58 /* PHAsset+Ext.swift in Sources */,
 				7C0444F822BE3D9A00D31A58 /* SelectImagesVM.swift in Sources */,
 				7C0444FB22BE44E200D31A58 /* AlertPresenter.swift in Sources */,
@@ -329,6 +336,7 @@
 				7C04450922BE5A8000D31A58 /* VideoConverterVM.swift in Sources */,
 				7C0444FE22BE497200D31A58 /* SelectedImageCell.swift in Sources */,
 				7C0444F322BE37C200D31A58 /* SelectAnimationVC.swift in Sources */,
+				7CCA44A622BF94AA00F9AAA5 /* LocalFileManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -24,6 +24,7 @@ class VideoConverterVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addImageGesture()
+        viewModel.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,13 +61,41 @@ class VideoConverterVC: UIViewController {
     
     @objc func showVideo(recognizer: UITapGestureRecognizer) {
         
-        let videoURL = URL(string: "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4")
-        let player = AVPlayer(url: videoURL!)
+        guard let videoURL = viewModel.videoURL else {
+            AlertPresenter.showError(at: self, error: "Convert video before view it")
+            return
+        }
+        let player = AVPlayer(url: videoURL)
         let playerViewController = AVPlayerViewController()
         playerViewController.player = player
         self.present(playerViewController, animated: true) {
             playerViewController.player!.play()
         }
+    }
+    
+}
+
+
+// MARK: - VideoConverterVMDelegate
+extension VideoConverterVC: VideoConverterVMDelegate {
+    
+    func didFetchVideoURL(url: URL) {
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.videoPreviewImage.image = UIImage.videoPreviewImage(videoURL: url)
+        }
+    }
+    
+    func didReceivedError(error: String) {
+        AlertPresenter.showError(at: self, error: error)
+    }
+    
+    func didReceiveSuccess(message: String) {
+        AlertPresenter.showSuccessMessage(at: self, message: message)
+    }
+    
+    func didReceivedUnauthorizedError(error: String) {
+        AlertPresenter.showPermissionDeniedAlert(at: self, errorMessage: error)
     }
     
 }

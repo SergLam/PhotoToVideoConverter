@@ -6,7 +6,6 @@ target 'photo-to-video-converter' do
   use_frameworks!
 
   # Pods for photo-to-video-converter
-    pod 'SnapKit', '~> 5.0.0'
     pod 'TLPhotoPicker'
     pod 'DZNEmptyDataSet'
 
