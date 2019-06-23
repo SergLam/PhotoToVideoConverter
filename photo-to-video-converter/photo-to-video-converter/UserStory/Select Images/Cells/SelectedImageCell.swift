@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SnapKit
 
 class SelectedImageCell: UICollectionViewCell {
     
@@ -28,9 +27,14 @@ class SelectedImageCell: UICollectionViewCell {
     private func setupLayout() {
         
         contentView.addSubview(imageView)
-        imageView.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()
-        }
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        imageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0).isActive = true
+        imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0).isActive = true
+        imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0).isActive = true
+        imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0).isActive = true
+        
     }
     
     func update(with image: UIImage?) {

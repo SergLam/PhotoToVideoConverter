@@ -52,8 +52,17 @@ extension SelectImagesVC: TLPhotosPickerViewControllerDelegate {
     
     func dismissPhotoPicker(withPHAssets: [PHAsset]) {
         
+        LocalFileManager.shared.removeAllCachedImages()
         viewModel.images = withPHAssets
         UserDefaultsManager.shared.selectedImagesCount = withPHAssets.count
+        
+        let queue = DispatchQueue(label: "imagesCaching", qos: .userInteractive, attributes: .concurrent, autoreleaseFrequency: .inherit, target: nil)
+        queue.async { [unowned self] in
+            for (index, asset) in withPHAssets.enumerated() {
+                LocalFileManager.shared.saveImageToCache(imageName: String(index), image: asset.getImage(width: 1280, height: 720)!.fixedOrientation()! )
+            }
+            AlertPresenter.showSuccessMessage(at: self, message: "Image caching completed")
+        }
     }
     
     func dismissComplete() {

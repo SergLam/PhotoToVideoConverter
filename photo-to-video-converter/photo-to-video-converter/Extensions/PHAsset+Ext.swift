@@ -23,4 +23,32 @@ extension PHAsset {
         return thumbnail
     }
     
+    func getImage() -> UIImage? {
+        
+        let manager = PHImageManager.default()
+        let option = PHImageRequestOptions()
+        
+        var resultImage: UIImage?
+        option.isSynchronous = true
+        option.deliveryMode = .highQualityFormat
+        manager.requestImage(for: self, targetSize: CGSize(width: self.pixelWidth, height: self.pixelHeight), contentMode: .aspectFit, options: option) { (image, info) in
+            resultImage = image
+        }
+        return resultImage
+    }
+    
+    func getImage(width: CGFloat, height: CGFloat) -> UIImage? {
+        
+        let manager = PHImageManager.default()
+        let option = PHImageRequestOptions()
+        
+        var resultImage: UIImage?
+        option.isSynchronous = true
+        option.deliveryMode = .highQualityFormat
+        manager.requestImage(for: self, targetSize: CGSize(width: width, height: height), contentMode: .aspectFit, options: option) { (image, info) in
+            resultImage = image
+        }
+        return resultImage
+    }
+    
 }
