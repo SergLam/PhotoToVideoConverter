@@ -97,7 +97,7 @@ class VideoConverterVM {
 // MARK: - Video conversion methods
 extension VideoConverterVM {
     
-    func build(photos: [URL],_ progress: @escaping ((Progress) -> Void), success: @escaping ((URL) -> Void), failure: @escaping ((NSError) -> Void)) {
+    private func build(photos: [URL],_ progress: @escaping ((Progress) -> Void), success: @escaping ((URL) -> Void), failure: @escaping ((NSError) -> Void)) {
         
         guard let data = try? Data(contentsOf: photos.first!), let image = UIImage(data: data) else {
             assertionFailure("Unable to get first image")
@@ -157,27 +157,15 @@ extension VideoConverterVM {
                     let fps: Int32 = 30
                     let duration: Int64 = Int64(Double(fps) * self.videoFrameDuration)
                     
-                    let frameDuration = CMTimeMake(value: duration, timescale: fps)
                     let currentProgress = Progress(totalUnitCount: Int64(photos.count))
                     
                     for (index, photoURL) in photos.enumerated() {
 
                         let frameStartTime = index == 0 ? CMTime.zero : CMTimeMake(value: Int64(index) * duration, timescale: fps)
 
-                        let lastFrameTime = index == 0 ? CMTimeMake(value: duration/2, timescale: fps) : CMTimeMake(value: Int64(index) * duration, timescale: fps)
-                        let frameEndTime = CMTimeAdd(lastFrameTime, frameDuration)
+                        let lastFrameTime = CMTimeAdd(frameStartTime, CMTimeMake(value: duration / 2, timescale: fps))
 
-                        if !self.appendPixelBufferForImageAtURL(photoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: frameStartTime) {
-                            error = self.failedToStartAssetWriterError
-                            break
-                        }
-                        
-                        while !videoWriterInput.isReadyForMoreMediaData {}
-                        
-                        if !self.appendPixelBufferForImageAtURL(photoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: lastFrameTime) {
-                                error = self.failedToStartAssetWriterError
-                                break
-                            }
+                        error = self.writeFrame(photoURL: photoURL, videoWriterInput: videoWriterInput, pixelBufferAdaptor: pixelBufferAdaptor, frameStartTime: frameStartTime, frameEndTime: lastFrameTime)
 
                         currentProgress.completedUnitCount = Int64(index+1)
                         progress(currentProgress)
@@ -206,7 +194,26 @@ extension VideoConverterVM {
         failure(err)
     }
     
-    func appendPixelBufferForImageAtURL(_ url: URL, pixelBufferAdaptor: AVAssetWriterInputPixelBufferAdaptor, presentationTime: CMTime) -> Bool {
+    private func writeFrame(photoURL: URL,
+                            videoWriterInput: AVAssetWriterInput,
+                            pixelBufferAdaptor: AVAssetWriterInputPixelBufferAdaptor,
+                            frameStartTime: CMTime, frameEndTime: CMTime?) -> NSError? {
+        if !self.appendPixelBufferForImageAtURL(photoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: frameStartTime) {
+            return failedToStartAssetWriterError
+        }
+        
+        guard let endTime = frameEndTime else {
+            return nil
+        }
+        
+        while !videoWriterInput.isReadyForMoreMediaData {}
+        if !self.appendPixelBufferForImageAtURL(photoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: endTime) {
+            return failedToStartAssetWriterError
+        }
+        return nil
+    }
+    
+    private func appendPixelBufferForImageAtURL(_ url: URL, pixelBufferAdaptor: AVAssetWriterInputPixelBufferAdaptor, presentationTime: CMTime) -> Bool {
         var appendSucceeded = false
         
         autoreleasepool {
@@ -242,7 +249,7 @@ extension VideoConverterVM {
         return appendSucceeded
     }
     
-    func fillPixelBufferFromImage(_ image: UIImage, pixelBuffer: CVPixelBuffer) {
+    private func fillPixelBufferFromImage(_ image: UIImage, pixelBuffer: CVPixelBuffer) {
         CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
         
         let pixelData = CVPixelBufferGetBaseAddress(pixelBuffer)
