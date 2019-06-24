@@ -22,9 +22,11 @@ class VideoConverterVM {
     
     weak var delegate: VideoConverterVMDelegate?
     
-    let kErrorDomain = Bundle.main.bundleIdentifier ?? "VideoConverter"
-    let kFailedToStartAssetWriterError = 0
-    let kFailedToAppendPixelBufferError = 1
+    private static let kErrorDomain = Bundle.main.bundleIdentifier ?? "VideoConverter"
+    let failedToStartAssetWriterError = NSError(domain: VideoConverterVM.kErrorDomain, code: 0,
+                                                userInfo: ["description": "AVAssetWriterInputPixelBufferAdapter failed to append pixel buffer"])
+    let failedToAppendPixelBufferError = NSError(domain: VideoConverterVM.kErrorDomain, code: 1,
+                                                 userInfo: ["description": "AVAssetWriter failed to start writing"])
     
     private var videoWriter: AVAssetWriter?
     
@@ -160,53 +162,27 @@ extension VideoConverterVM {
                     
                     for (index, photoURL) in photos.enumerated() {
 
-                        let frameStartTime = index == 0 ? CMTime.zero : CMTimeMake(value: Int64(index), timescale: 1)
+                        let frameStartTime = index == 0 ? CMTime.zero : CMTimeMake(value: Int64(index) * duration, timescale: fps)
 
-                        let lastFrameTime = index == 0 ? CMTimeMake(value: 1, timescale: 1) : CMTimeMake(value: Int64(index) * duration, timescale: fps)
+                        let lastFrameTime = index == 0 ? CMTimeMake(value: duration/2, timescale: fps) : CMTimeMake(value: Int64(index) * duration, timescale: fps)
                         let frameEndTime = CMTimeAdd(lastFrameTime, frameDuration)
 
                         if !self.appendPixelBufferForImageAtURL(photoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: frameStartTime) {
-                            error = NSError(
-                                domain: self.kErrorDomain,
-                                code: self.kFailedToAppendPixelBufferError,
-                                userInfo: ["description": "AVAssetWriterInputPixelBufferAdapter failed to append pixel buffer"]
-                            )
+                            error = self.failedToStartAssetWriterError
                             break
                         }
                         
                         while !videoWriterInput.isReadyForMoreMediaData {}
                         
-                        if !self.appendPixelBufferForImageAtURL(photoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: frameEndTime) {
-                            error = NSError(
-                                domain: self.kErrorDomain,
-                                code: self.kFailedToAppendPixelBufferError,
-                                userInfo: ["description": "AVAssetWriterInputPixelBufferAdapter failed to append pixel buffer"]
-                            )
-                            break
-                        }
+                        if !self.appendPixelBufferForImageAtURL(photoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: lastFrameTime) {
+                                error = self.failedToStartAssetWriterError
+                                break
+                            }
 
                         currentProgress.completedUnitCount = Int64(index+1)
                         progress(currentProgress)
 
                     }
-                    
-//                    for (index, photoURL) in photos.enumerated() {
-//
-//                        let lastFrameTime = CMTimeMake(value: Int64(index) * duration, timescale: fps)
-//                        let presentationTime = index == 0 ? lastFrameTime : CMTimeAdd(lastFrameTime, frameDuration)
-//
-//                        if !self.appendPixelBufferForImageAtURL(photoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: presentationTime) {
-//                            error = NSError(
-//                                domain: self.kErrorDomain,
-//                                code: self.kFailedToAppendPixelBufferError,
-//                                userInfo: ["description": "AVAssetWriterInputPixelBufferAdapter failed to append pixel buffer"]
-//                            )
-//                            break
-//                        }
-//                        currentProgress.completedUnitCount = Int64(index+1)
-//                        progress(currentProgress)
-//
-//                    }
                     
                     videoWriterInput.markAsFinished()
                     videoWriter.finishWriting {
@@ -221,18 +197,13 @@ extension VideoConverterVM {
                     }
                 }
             } else {
-                error = NSError(
-                    domain: kErrorDomain,
-                    code: kFailedToStartAssetWriterError,
-                    userInfo: ["description": "AVAssetWriter failed to start writing"]
-                )
+                error = failedToAppendPixelBufferError
             }
         }
         guard let err = error else {
             return
         }
         failure(err)
-        self.delegate?.didReceivedError(error: err.localizedDescription)
     }
     
     func appendPixelBufferForImageAtURL(_ url: URL, pixelBufferAdaptor: AVAssetWriterInputPixelBufferAdaptor, presentationTime: CMTime) -> Bool {
