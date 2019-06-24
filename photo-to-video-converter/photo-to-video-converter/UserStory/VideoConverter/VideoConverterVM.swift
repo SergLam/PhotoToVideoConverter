@@ -158,30 +158,55 @@ extension VideoConverterVM {
                     let frameDuration = CMTimeMake(value: duration, timescale: fps)
                     let currentProgress = Progress(totalUnitCount: Int64(photos.count))
                     
-                    var frameCount: Int64 = 0
-                    var remainingPhotoURLs = photos
-                    
-                    while videoWriterInput.isReadyForMoreMediaData && !remainingPhotoURLs.isEmpty {
-                        
-                        let nextPhotoURL = remainingPhotoURLs.remove(at: 0)
-                        let lastFrameTime = CMTimeMake(value: frameCount * duration, timescale: fps)
-                        let presentationTime = frameCount == 0 ? lastFrameTime : CMTimeAdd(lastFrameTime, frameDuration)
-                        
-                        if !self.appendPixelBufferForImageAtURL(nextPhotoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: presentationTime) {
+                    for (index, photoURL) in photos.enumerated() {
+
+                        let frameStartTime = index == 0 ? CMTime.zero : CMTimeMake(value: Int64(index), timescale: 1)
+
+                        let lastFrameTime = index == 0 ? CMTimeMake(value: 1, timescale: 1) : CMTimeMake(value: Int64(index) * duration, timescale: fps)
+                        let frameEndTime = CMTimeAdd(lastFrameTime, frameDuration)
+
+                        if !self.appendPixelBufferForImageAtURL(photoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: frameStartTime) {
                             error = NSError(
                                 domain: self.kErrorDomain,
                                 code: self.kFailedToAppendPixelBufferError,
                                 userInfo: ["description": "AVAssetWriterInputPixelBufferAdapter failed to append pixel buffer"]
                             )
-                            
                             break
                         }
                         
-                        frameCount += 1
+                        while !videoWriterInput.isReadyForMoreMediaData {}
                         
-                        currentProgress.completedUnitCount = frameCount
+                        if !self.appendPixelBufferForImageAtURL(photoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: frameEndTime) {
+                            error = NSError(
+                                domain: self.kErrorDomain,
+                                code: self.kFailedToAppendPixelBufferError,
+                                userInfo: ["description": "AVAssetWriterInputPixelBufferAdapter failed to append pixel buffer"]
+                            )
+                            break
+                        }
+
+                        currentProgress.completedUnitCount = Int64(index+1)
                         progress(currentProgress)
+
                     }
+                    
+//                    for (index, photoURL) in photos.enumerated() {
+//
+//                        let lastFrameTime = CMTimeMake(value: Int64(index) * duration, timescale: fps)
+//                        let presentationTime = index == 0 ? lastFrameTime : CMTimeAdd(lastFrameTime, frameDuration)
+//
+//                        if !self.appendPixelBufferForImageAtURL(photoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: presentationTime) {
+//                            error = NSError(
+//                                domain: self.kErrorDomain,
+//                                code: self.kFailedToAppendPixelBufferError,
+//                                userInfo: ["description": "AVAssetWriterInputPixelBufferAdapter failed to append pixel buffer"]
+//                            )
+//                            break
+//                        }
+//                        currentProgress.completedUnitCount = Int64(index+1)
+//                        progress(currentProgress)
+//
+//                    }
                     
                     videoWriterInput.markAsFinished()
                     videoWriter.finishWriting {
