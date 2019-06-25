@@ -22,16 +22,23 @@ class VideoConverterVM {
     
     weak var delegate: VideoConverterVMDelegate?
     
-    private static let kErrorDomain = Bundle.main.bundleIdentifier ?? "VideoConverter"
-    let failedToStartAssetWriterError = NSError(domain: VideoConverterVM.kErrorDomain, code: 0,
-                                                userInfo: ["description": "AVAssetWriterInputPixelBufferAdapter failed to append pixel buffer"])
-    let failedToAppendPixelBufferError = NSError(domain: VideoConverterVM.kErrorDomain, code: 1,
-                                                 userInfo: ["description": "AVAssetWriter failed to start writing"])
-    let failedToExportAssetError = NSError(domain: VideoConverterVM.kErrorDomain, code: 2,
-                                           userInfo: ["description": "AVAssetExportSession failed"])
-    let canceledExportAssetError = NSError(domain: VideoConverterVM.kErrorDomain, code: 3,
-                                           userInfo: ["description": "AVAssetExportSession canceled"])
     
+    /// MARK: - Errors
+    static let kErrorDomain = Bundle.main.bundleIdentifier ?? "VideoConverter"
+    let failedToStartAssetWriterError = NSError.create(domain: kErrorDomain, errorCode: 0,
+                                                       description: "AVAssetWriterInputPixelBufferAdapter failed to append pixel buffer")
+    
+    let failedToAppendPixelBufferError = NSError.create(domain: kErrorDomain, errorCode: 1, description: "AVAssetWriter failed to start writing")
+    
+    let failedToExportAssetError = NSError.create(domain: kErrorDomain, errorCode: 2, description: "AVAssetExportSession failed")
+    let canceledExportAssetError = NSError.create(domain: kErrorDomain, errorCode: 3, description: "AVAssetExportSession canceled")
+    let createCompositionError = NSError.create(domain: kErrorDomain, errorCode: 4, description: "Unable to create composition")
+    let getVideoTrackError = NSError.create(domain: kErrorDomain, errorCode: 5, description: "Unable to get video track")
+    
+    let assetExportError = NSError.create(domain: kErrorDomain, errorCode: 6, description: "Unable to create asset export")
+    let getCGImageError = NSError.create(domain: kErrorDomain, errorCode: 7, description: "Unable to get cgimage")
+    
+    // MARL: Properties
     private var videoWriter: AVAssetWriter?
     
     var videoURL: URL?
@@ -177,7 +184,11 @@ extension VideoConverterVM {
                         
                         let lastFrameTime = CMTimeAdd(frameStartTime, CMTimeMake(value: duration / 2, timescale: fps))
                         
-                        error = self.writeFrame(photoURL: photoURL, videoWriterInput: videoWriterInput, pixelBufferAdaptor: pixelBufferAdaptor, frameStartTime: frameStartTime, frameEndTime: lastFrameTime)
+                        do {
+                            try self.writeFrame(photoURL: photoURL, videoWriterInput: videoWriterInput, pixelBufferAdaptor: pixelBufferAdaptor, frameStartTime: frameStartTime, frameEndTime: lastFrameTime)
+                        } catch {
+                            failure(error as NSError)
+                        }
                         
                         currentProgress.completedUnitCount = Int64(index+1)
                         progress(currentProgress)
@@ -209,26 +220,22 @@ extension VideoConverterVM {
     private func writeFrame(photoURL: URL,
                             videoWriterInput: AVAssetWriterInput,
                             pixelBufferAdaptor: AVAssetWriterInputPixelBufferAdaptor,
-                            frameStartTime: CMTime, frameEndTime: CMTime?) -> NSError? {
-        if !self.appendPixelBufferForImageAtURL(photoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: frameStartTime) {
-            return failedToStartAssetWriterError
-        }
+                            frameStartTime: CMTime, frameEndTime: CMTime?) throws {
+        
+        try appendPixelBufferForImageAtURL(photoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: frameStartTime)
         
         guard let endTime = frameEndTime else {
-            return nil
+            return
         }
         
         while !videoWriterInput.isReadyForMoreMediaData {}
-        if !self.appendPixelBufferForImageAtURL(photoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: endTime) {
-            return failedToStartAssetWriterError
-        }
-        return nil
+        
+        try appendPixelBufferForImageAtURL(photoURL, pixelBufferAdaptor: pixelBufferAdaptor, presentationTime: endTime)
     }
     
-    private func appendPixelBufferForImageAtURL(_ url: URL, pixelBufferAdaptor: AVAssetWriterInputPixelBufferAdaptor, presentationTime: CMTime) -> Bool {
-        var appendSucceeded = false
+    private func appendPixelBufferForImageAtURL(_ url: URL, pixelBufferAdaptor: AVAssetWriterInputPixelBufferAdaptor, presentationTime: CMTime) throws {
         
-        autoreleasepool {
+        try autoreleasepool {
             
             guard let imageData = try? Data(contentsOf: url),
                 let image = UIImage(data: imageData),
@@ -248,20 +255,16 @@ extension VideoConverterVM {
                 assertionFailure("error: Failed to allocate pixel buffer from pool")
                 return
             }
-            fillPixelBufferFromImage(image, pixelBuffer: pixelBuffer)
+            try fillPixelBufferFromImage(image, pixelBuffer: pixelBuffer)
             
-            appendSucceeded = pixelBufferAdaptor.append(
-                pixelBuffer,
-                withPresentationTime: presentationTime
-            )
+            pixelBufferAdaptor.append(pixelBuffer, withPresentationTime: presentationTime)
             pixelBufferPointer.deinitialize(count: 1)
             pixelBufferPointer.deallocate()
         }
         
-        return appendSucceeded
     }
     
-    private func fillPixelBufferFromImage(_ image: UIImage, pixelBuffer: CVPixelBuffer) {
+    private func fillPixelBufferFromImage(_ image: UIImage, pixelBuffer: CVPixelBuffer) throws {
         CVPixelBufferLockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
         
         let pixelData = CVPixelBufferGetBaseAddress(pixelBuffer)
@@ -279,8 +282,7 @@ extension VideoConverterVM {
                 return
         }
         guard let cgImage = image.cgImage else {
-            assertionFailure("Unable to get cgimage")
-            return
+            throw(getCGImageError)
         }
         
         context.draw(cgImage, in: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
@@ -293,13 +295,15 @@ extension VideoConverterVM {
         let videoAsset: AVURLAsset = AVURLAsset(url: videoURL, options: nil)
         let mixComposition: AVMutableComposition = AVMutableComposition()
         
-        guard let compositionVideoTrack = mixComposition.addMutableTrack(withMediaType: .video, preferredTrackID: kCMPersistentTrackID_Invalid) else {
+        guard let compositionVideoTrack = mixComposition.addMutableTrack(withMediaType: .video, preferredTrackID: CMPersistentTrackID()) else {
             assertionFailure("Unable to create composition")
+            failure(createCompositionError)
             return
         }
         
         guard let clipVideoTrack = videoAsset.tracks(withMediaType: .video).first else {
-            assertionFailure("Unable to video track")
+            assertionFailure("Unable to get video track")
+            failure(getVideoTrackError)
             return
         }
         let timeRange = CMTimeRange(start: CMTime.zero, end: videoAsset.duration)
@@ -313,7 +317,8 @@ extension VideoConverterVM {
         compositionVideoTrack.preferredTransform = clipVideoTrack.preferredTransform
         
         guard let videoTrack: AVAssetTrack = videoAsset.tracks(withMediaType: .video).first else {
-            assertionFailure("Unable to video track")
+            assertionFailure("Unable to get video track")
+            failure(getVideoTrackError)
             return
         }
         let videoSize: CGSize = videoTrack.naturalSize
@@ -337,13 +342,13 @@ extension VideoConverterVM {
         parentLayer.frame = CGRect(x: 0, y: 0, width: videoSize.width, height: videoSize.height)
         videoLayer.frame = CGRect(x: 0, y: 0, width: videoSize.width, height: videoSize.height)
         parentLayer.addSublayer(videoLayer)
-        parentLayer.addSublayer(animationLayer)
+        videoLayer.addSublayer(animationLayer)
         
         //create the composition and add the instructions to insert the layer:
         
         let videoComp: AVMutableVideoComposition = AVMutableVideoComposition()
         videoComp.renderSize = videoSize
-        videoComp.frameDuration = CMTime(value: 1, timescale: 30)
+        videoComp.frameDuration = CMTime(value: 30, timescale: 30)
         videoComp.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
         
         /// instruction
@@ -352,6 +357,7 @@ extension VideoConverterVM {
         instruction.timeRange = CMTimeRangeMake(start: CMTime.zero, duration: mixComposition.duration)
         guard let mixVideoTrack: AVAssetTrack = mixComposition.tracks(withMediaType: .video).first else {
             assertionFailure("Unable to video track")
+            failure(getVideoTrackError)
             return
         }
         let layerInstruction = AVMutableVideoCompositionLayerInstruction(assetTrack: mixVideoTrack)
@@ -361,6 +367,7 @@ extension VideoConverterVM {
         // export video
         guard let assetExport = AVAssetExportSession(asset: mixComposition, presetName: AVAssetExportPresetHighestQuality) else {
             assertionFailure("Unable to create asset export")
+            failure(failedToExportAssetError)
             return
         }
         assetExport.videoComposition = videoComp
