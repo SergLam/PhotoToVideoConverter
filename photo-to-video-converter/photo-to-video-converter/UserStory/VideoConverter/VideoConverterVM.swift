@@ -380,6 +380,7 @@ extension VideoConverterVM {
             do {
                 try FileManager.default.removeItem(atPath: animatedVideoURL.path)
             } catch {
+                assertionFailure(error.localizedDescription)
                 failure(error as NSError)
             }
         }
