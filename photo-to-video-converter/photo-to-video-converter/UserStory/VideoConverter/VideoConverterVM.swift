@@ -375,6 +375,11 @@ extension VideoConverterVM {
         let videoName = "AnimatedVideo.mp4"
         
         let animatedVideoURL = videoURL.deletingLastPathComponent().appendingPathComponent(videoName)
+        
+        if FileManager.default.fileExists(atPath: animatedVideoURL.path) {
+            FileManager.default.removeItem(atPath: animatedVideoURL.path)
+        }
+        
         assetExport.outputFileType = AVFileType.mp4
         assetExport.outputURL = animatedVideoURL
         assetExport.shouldOptimizeForNetworkUse = true
