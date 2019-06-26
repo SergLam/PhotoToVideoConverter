@@ -36,7 +36,7 @@ class SelectAnimationVC: UIViewController {
         let animation = CATransition()
         
         //Set transition properties
-        animation.type = CATransitionType(rawValue: viewModel.transitions[pickerView.selectedRow(inComponent: 0)])
+        animation.type = viewModel.transitions[pickerView.selectedRow(inComponent: 0)]
         animation.subtype = viewModel.directions[pickerView.selectedRow(inComponent: 1)]
         animation.duration = viewModel.durations[pickerView.selectedRow(inComponent: 2)]
         animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
@@ -90,7 +90,7 @@ extension SelectAnimationVC: UIPickerViewDelegate {
         
         switch component {
         case 0:
-            UserDefaultsManager.shared.selectedTransition = viewModel.transitions[row]
+            UserDefaultsManager.shared.selectedTransition = viewModel.transitions[row].rawValue
             
         case 1:
             UserDefaultsManager.shared.selectedTransitionDirection =  viewModel.directions[row].rawValue
@@ -107,7 +107,7 @@ extension SelectAnimationVC: UIPickerViewDelegate {
         
         switch component {
         case 0:
-            return viewModel.transitions[row]
+            return viewModel.transitions[row].rawValue
             
         case 1:
             return viewModel.directions[row].rawValue

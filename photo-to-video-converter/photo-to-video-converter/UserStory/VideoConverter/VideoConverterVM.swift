@@ -38,11 +38,14 @@ class VideoConverterVM {
     let assetExportError = NSError.create(domain: kErrorDomain, errorCode: 6, description: "Unable to create asset export")
     let getCGImageError = NSError.create(domain: kErrorDomain, errorCode: 7, description: "Unable to get cgimage")
     
-    // MARL: Properties
+    // MARK: Properties
     private var videoWriter: AVAssetWriter?
     
+    // MARK: Video properties
     var videoURL: URL?
-    var videoFrameDuration = UserDefaultsManager.shared.selectedTransitionDuration ?? 1.0
+    private var videoFrameDuration = UserDefaultsManager.shared.selectedTransitionDuration ?? 1.0
+    private let videoOutputSize = CGSize(width: 1280, height: 720)
+    private let videoFPS: Int32 = 30
     
     func convertVideo() {
         
@@ -122,8 +125,8 @@ extension VideoConverterVM {
             assertionFailure("Unable to get first image")
             return
         }
+        
         let inputSize = CGSize(width: image.size.width, height: image.size.height)
-        let outputSize = CGSize(width: 1280, height: 720)
         var error: NSError?
         
         guard let documentsPath = LocalFileManager.shared.documentsDirectoryURL else {
@@ -147,8 +150,8 @@ extension VideoConverterVM {
         if let videoWriter = videoWriter {
             let videoSettings: [String : AnyObject] = [
                 AVVideoCodecKey  : AVVideoCodecType.h264 as AnyObject,
-                AVVideoWidthKey  : outputSize.width as AnyObject,
-                AVVideoHeightKey : outputSize.height as AnyObject
+                AVVideoWidthKey  : videoOutputSize.width as AnyObject,
+                AVVideoHeightKey : videoOutputSize.height as AnyObject
             ]
             
             let videoWriterInput = AVAssetWriterInput(mediaType: AVMediaType.video, outputSettings: videoSettings)
@@ -173,16 +176,16 @@ extension VideoConverterVM {
                 let media_queue = DispatchQueue(label: "mediaInputQueue")
                 
                 videoWriterInput.requestMediaDataWhenReady(on: media_queue) { [unowned self] in
-                    let fps: Int32 = 30
-                    let duration: Int64 = Int64(Double(fps) * self.videoFrameDuration)
+                    
+                    let duration: Int64 = Int64(Double(self.videoFPS) * self.videoFrameDuration)
                     
                     let currentProgress = Progress(totalUnitCount: Int64(photos.count))
                     
                     for (index, photoURL) in photos.enumerated() {
                         
-                        let frameStartTime = index == 0 ? CMTime.zero : CMTimeMake(value: Int64(index) * duration, timescale: fps)
+                        let frameStartTime = index == 0 ? CMTime.zero : CMTime(value: Int64(index) * duration, timescale: self.videoFPS)
                         
-                        let lastFrameTime = CMTimeAdd(frameStartTime, CMTimeMake(value: duration / 2, timescale: fps))
+                        let lastFrameTime = CMTimeAdd(frameStartTime, CMTime(value: duration / 2, timescale: self.videoFPS))
                         
                         do {
                             try self.writeFrame(photoURL: photoURL, videoWriterInput: videoWriterInput, pixelBufferAdaptor: pixelBufferAdaptor, frameStartTime: frameStartTime, frameEndTime: lastFrameTime)
@@ -285,11 +288,13 @@ extension VideoConverterVM {
             throw(getCGImageError)
         }
         
-        context.draw(cgImage, in: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
+        context.draw(cgImage, in: CGRect(origin: CGPoint.zero, size: image.size))
         
         CVPixelBufferUnlockBaseAddress(pixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
     }
     
+    
+    // MARK: - Video animation adding
     private func addAnimationToVideo(videoURL: URL, success: @escaping ((URL) -> Void), failure: @escaping ((NSError) -> Void)) {
         
         let videoAsset: AVURLAsset = AVURLAsset(url: videoURL, options: nil)
@@ -316,39 +321,51 @@ extension VideoConverterVM {
         
         compositionVideoTrack.preferredTransform = clipVideoTrack.preferredTransform
         
-        guard let videoTrack: AVAssetTrack = videoAsset.tracks(withMediaType: .video).first else {
-            assertionFailure("Unable to get video track")
-            failure(getVideoTrackError)
-            return
-        }
-        let videoSize: CGSize = videoTrack.naturalSize
+        let videoSize: CGSize = clipVideoTrack.naturalSize
         
-        //  create the layer with the animation
-        let animationLayer = CALayer()
-        animationLayer.frame = CGRect(x: 0, y: 0, width: videoSize.width, height: videoSize.height)
-        let animation = CATransition()
-        
-        //Set transition properties
-        animation.type = CATransitionType(rawValue: UserDefaultsManager.shared.selectedTransition!)
-        animation.subtype = CATransitionSubtype.init(rawValue: UserDefaultsManager.shared.selectedTransitionDirection!)
-        animation.duration = UserDefaultsManager.shared.selectedTransitionDuration!
-        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
-        
-        animationLayer.add(animation, forKey: "animation")
-        
-        //sorts the layer in proper order
         let parentLayer = CALayer()
         let videoLayer = CALayer()
-        parentLayer.frame = CGRect(x: 0, y: 0, width: videoSize.width, height: videoSize.height)
-        videoLayer.frame = CGRect(x: 0, y: 0, width: videoSize.width, height: videoSize.height)
-        parentLayer.addSublayer(videoLayer)
-        videoLayer.addSublayer(animationLayer)
         
+        parentLayer.frame = CGRect(origin: CGPoint.zero, size: videoSize)
+        videoLayer.frame = CGRect(origin: CGPoint.zero, size: videoSize)
+        parentLayer.addSublayer(videoLayer)
+        
+        for index in 1...2/*UserDefaultsManager.shared.selectedImagesCount!*/ {
+            // create the layer with the animation
+            let animationLayer = CALayer()
+            animationLayer.contents = videoAsset.getImage(at: CMTime(value: Int64(videoFPS * Int32(index)),
+                                                                     timescale: videoFPS))?.cgImage
+            animationLayer.frame = CGRect(origin: CGPoint.zero, size: videoSize)
+            animationLayer.masksToBounds = true
+            let animation = CATransition()
+            
+            //Set transition properties
+            animation.type = CATransitionType(rawValue: UserDefaultsManager.shared.selectedTransition!)
+            animation.subtype = CATransitionSubtype(rawValue: UserDefaultsManager.shared.selectedTransitionDirection!)
+            animation.beginTime = AVCoreAnimationBeginTimeAtZero
+            animation.duration = UserDefaultsManager.shared.selectedTransitionDuration!
+            animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+            animation.isRemovedOnCompletion = true
+            animationLayer.add(animation, forKey: "animation")
+            
+            // Hide animation layer after it completion
+            let hideAnimation = CABasicAnimation(keyPath: "opacity")
+            hideAnimation.duration = 0.0
+            // animate from fully visible to invisible
+            hideAnimation.fromValue = 1.0
+            hideAnimation.toValue = 0.0
+            hideAnimation.beginTime = animation.duration
+            hideAnimation.isRemovedOnCompletion = false
+            animationLayer.add(hideAnimation, forKey: "animateOpacity")
+            
+            parentLayer.addSublayer(animationLayer)
+        }
+
         //create the composition and add the instructions to insert the layer:
         
         let videoComp: AVMutableVideoComposition = AVMutableVideoComposition()
         videoComp.renderSize = videoSize
-        videoComp.frameDuration = CMTime(value: 30, timescale: 30)
+        videoComp.frameDuration = CMTime(value: 1, timescale: videoFPS) // ALARM: most important part
         videoComp.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
         
         /// instruction
@@ -387,7 +404,7 @@ extension VideoConverterVM {
         
         assetExport.outputFileType = AVFileType.mp4
         assetExport.outputURL = animatedVideoURL
-        assetExport.shouldOptimizeForNetworkUse = true
+        assetExport.shouldOptimizeForNetworkUse = false
         
         assetExport.exportAsynchronously { [unowned self] in
             
@@ -397,6 +414,8 @@ extension VideoConverterVM {
                 debugPrint("Export status: \(assetExport.status.rawValue)")
                 
             case .completed:
+                
+                self.videoURL = animatedVideoURL
                 success(animatedVideoURL)
                 
             case .failed:

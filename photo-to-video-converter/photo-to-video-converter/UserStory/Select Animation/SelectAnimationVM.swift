@@ -10,9 +10,8 @@ import UIKit
 
 class SelectAnimationVM {
     
-    let transitions = ["oglFlip", "pageCurl", "pageUnCurl", "fade", "cube", "moveIn",
-                       "push", "reveal", "rippleEffect", "suckEffect", "cameraIris"]
-    let directions = [CATransitionSubtype.fromLeft, CATransitionSubtype.fromRight, CATransitionSubtype.fromTop, CATransitionSubtype.fromBottom]
+    let transitions: [CATransitionType] = [.fade, .moveIn, .push, .reveal]
+    let directions: [CATransitionSubtype] = [.fromLeft, .fromRight, .fromTop, .fromBottom]
     let durations = [0.0, 0.15, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 4.0]
     
     var imageName = "imageA.jpg"
