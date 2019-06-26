@@ -54,7 +54,7 @@ final class UserDefaultsManager {
     func setDefaultValues() {
         
         let viewModel = SelectAnimationVM()
-        selectedTransition = viewModel.transitions[viewModel.transitions.count / 2]
+        selectedTransition = viewModel.transitions[viewModel.transitions.count / 2].rawValue
         selectedTransitionDirection = viewModel.directions[viewModel.directions.count / 2].rawValue
         selectedTransitionDuration = viewModel.durations[viewModel.durations.count / 2]
         selectedImagesCount = 0

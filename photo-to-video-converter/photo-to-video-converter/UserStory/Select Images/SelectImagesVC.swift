@@ -25,7 +25,6 @@ class SelectImagesVC: UIViewController {
     
     private func setupCollectionView() {
         
-//        collectionView.register(SelectedImageCell.self, forCellWithReuseIdentifier: SelectedImageCell.identifier)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.emptyDataSetSource = self
@@ -37,6 +36,7 @@ class SelectImagesVC: UIViewController {
         let viewController = TLPhotosPickerViewController()
         
         var configure = TLPhotosPickerConfigure()
+        configure.usedCameraButton = false
         configure.allowedVideo = false
         configure.allowedVideoRecording = true
         

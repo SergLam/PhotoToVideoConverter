@@ -27,6 +27,7 @@ class SelectedImageCell: UICollectionViewCell {
     private func setupLayout() {
         
         contentView.addSubview(imageView)
+        imageView.contentMode = .scaleAspectFit
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         

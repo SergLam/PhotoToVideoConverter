@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		13B1FB9322C2009800A2F5A3 /* NSError+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B1FB9222C2009800A2F5A3 /* NSError+Ext.swift */; };
 		1552422C7B21DE689773BB1F /* Pods_photo_to_video_converter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB4FE5C0D964F2118F31DC66 /* Pods_photo_to_video_converter.framework */; };
 		7C0444DA22BD77C500D31A58 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0444D922BD77C500D31A58 /* AppDelegate.swift */; };
 		7C0444DC22BD77C500D31A58 /* SelectImagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0444DB22BD77C500D31A58 /* SelectImagesVC.swift */; };
@@ -26,12 +27,14 @@
 		7C04450922BE5A8000D31A58 /* VideoConverterVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C04450822BE5A8000D31A58 /* VideoConverterVM.swift */; };
 		7C04450B22BE5BD800D31A58 /* SelectAnimationVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C04450A22BE5BD800D31A58 /* SelectAnimationVM.swift */; };
 		7C04450D22BE5CB600D31A58 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C04450C22BE5CB600D31A58 /* UserDefaultsManager.swift */; };
+		7C6F876122C41950004AB72F /* AVURLAsset+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6F876022C41950004AB72F /* AVURLAsset+Ext.swift */; };
 		7CCA44A622BF94AA00F9AAA5 /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA44A522BF94AA00F9AAA5 /* LocalFileManager.swift */; };
 		7CCA44A822C016C500F9AAA5 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA44A722C016C500F9AAA5 /* UIImage+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		01BB1C53AF16CD776E519B52 /* Pods-photo-to-video-converter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-photo-to-video-converter.debug.xcconfig"; path = "Target Support Files/Pods-photo-to-video-converter/Pods-photo-to-video-converter.debug.xcconfig"; sourceTree = "<group>"; };
+		13B1FB9222C2009800A2F5A3 /* NSError+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+Ext.swift"; sourceTree = "<group>"; };
 		6309E77A7C7F4186E9B69746 /* Pods-photo-to-video-converter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-photo-to-video-converter.release.xcconfig"; path = "Target Support Files/Pods-photo-to-video-converter/Pods-photo-to-video-converter.release.xcconfig"; sourceTree = "<group>"; };
 		7C0444D622BD77C500D31A58 /* photo-to-video-converter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "photo-to-video-converter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C0444D922BD77C500D31A58 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -53,6 +56,7 @@
 		7C04450822BE5A8000D31A58 /* VideoConverterVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoConverterVM.swift; sourceTree = "<group>"; };
 		7C04450A22BE5BD800D31A58 /* SelectAnimationVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAnimationVM.swift; sourceTree = "<group>"; };
 		7C04450C22BE5CB600D31A58 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
+		7C6F876022C41950004AB72F /* AVURLAsset+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVURLAsset+Ext.swift"; sourceTree = "<group>"; };
 		7CCA44A522BF94AA00F9AAA5 /* LocalFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
 		7CCA44A722C016C500F9AAA5 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		CB4FE5C0D964F2118F31DC66 /* Pods_photo_to_video_converter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_photo_to_video_converter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -184,6 +188,8 @@
 				7C04450022BE4CAE00D31A58 /* PHAsset+Ext.swift */,
 				7C04450222BE54FA00D31A58 /* UIScreen+Ext.swift */,
 				7CCA44A722C016C500F9AAA5 /* UIImage+Ext.swift */,
+				13B1FB9222C2009800A2F5A3 /* NSError+Ext.swift */,
+				7C6F876022C41950004AB72F /* AVURLAsset+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -325,9 +331,11 @@
 				7CCA44A822C016C500F9AAA5 /* UIImage+Ext.swift in Sources */,
 				7C04450122BE4CAE00D31A58 /* PHAsset+Ext.swift in Sources */,
 				7C0444F822BE3D9A00D31A58 /* SelectImagesVM.swift in Sources */,
+				13B1FB9322C2009800A2F5A3 /* NSError+Ext.swift in Sources */,
 				7C0444FB22BE44E200D31A58 /* AlertPresenter.swift in Sources */,
 				7C04450D22BE5CB600D31A58 /* UserDefaultsManager.swift in Sources */,
 				7C0444DC22BD77C500D31A58 /* SelectImagesVC.swift in Sources */,
+				7C6F876122C41950004AB72F /* AVURLAsset+Ext.swift in Sources */,
 				7C0444F022BE375000D31A58 /* TabBarVC.swift in Sources */,
 				7C04450B22BE5BD800D31A58 /* SelectAnimationVM.swift in Sources */,
 				7C0444F622BE383F00D31A58 /* VideoConverterVC.swift in Sources */,
@@ -486,6 +494,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MDWBDEPC5G;
 				INFOPLIST_FILE = "$(SRCROOT)/photo-to-video-converter/BundleFiles/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -505,6 +514,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MDWBDEPC5G;
 				INFOPLIST_FILE = "$(SRCROOT)/photo-to-video-converter/BundleFiles/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
