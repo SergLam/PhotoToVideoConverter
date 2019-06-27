@@ -15,6 +15,8 @@ extension AVURLAsset {
         
         let generator = AVAssetImageGenerator(asset: self)
         generator.appliesPreferredTrackTransform = true
+        generator.requestedTimeToleranceAfter = CMTime.zero
+        generator.requestedTimeToleranceBefore = CMTime.zero
         
         do {
             let imageRef = try generator.copyCGImage(at: time, actualTime: nil)
