@@ -18,7 +18,7 @@ protocol VideoConverterVMDelegate: class {
     func didFetchVideoURL(url: URL)
 }
 
-class VideoConverterVM {
+class VideoConverterVM: NSObject {
     
     weak var delegate: VideoConverterVMDelegate?
     
@@ -46,6 +46,8 @@ class VideoConverterVM {
     private var videoFrameDuration = UserDefaultsManager.shared.selectedTransitionDuration ?? 1.0
     private let videoOutputSize = CGSize(width: 1280, height: 720)
     private let videoFPS: Int32 = 30
+    
+    private let animationLayer = CALayer()
     
     func convertVideo() {
         
@@ -332,7 +334,7 @@ extension VideoConverterVM {
         
         for index in 1...2/*UserDefaultsManager.shared.selectedImagesCount!*/ {
             // create the layer with the animation
-            let animationLayer = CALayer()
+//            let animationLayer = CALayer()
             animationLayer.contents = videoAsset.getImage(at: CMTime(value: Int64(videoFPS * Int32(index)),
                                                                      timescale: videoFPS))?.cgImage
             animationLayer.frame = CGRect(origin: CGPoint.zero, size: videoSize)
@@ -366,12 +368,13 @@ extension VideoConverterVM {
         let videoComp: AVMutableVideoComposition = AVMutableVideoComposition()
         videoComp.renderSize = videoSize
         videoComp.frameDuration = CMTime(value: 1, timescale: videoFPS) // ALARM: most important part
-        videoComp.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
+        videoComp.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer,
+                                                                      in: parentLayer)
         
         /// instruction
         let instruction: AVMutableVideoCompositionInstruction = AVMutableVideoCompositionInstruction()
         
-        instruction.timeRange = CMTimeRangeMake(start: CMTime.zero, duration: mixComposition.duration)
+        instruction.timeRange = CMTimeRangeMake(start: CMTime.zero, duration: mixComposition.duration) // Time for layer will be displayed
         guard let mixVideoTrack: AVAssetTrack = mixComposition.tracks(withMediaType: .video).first else {
             assertionFailure("Unable to video track")
             failure(getVideoTrackError)
