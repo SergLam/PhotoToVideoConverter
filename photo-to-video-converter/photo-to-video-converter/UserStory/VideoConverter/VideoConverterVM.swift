@@ -333,7 +333,7 @@ extension VideoConverterVM {
         for index in 0...UserDefaultsManager.shared.selectedImagesCount! - 1 {
             // create the layer with the animation
             let animationLayer = CALayer()
-            let nextSceneTime = CMTime(value: Int64(videoFPS * Int32(index)), timescale: videoFPS)
+            let nextSceneTime = CMTime(value: Int64(videoFPS * Int32(index) / 2), timescale: videoFPS)
             animationLayer.contents = videoAsset.getImage(at: nextSceneTime)?.cgImage
             animationLayer.frame = CGRect(origin: CGPoint.zero, size: videoSize)
             animationLayer.masksToBounds = true
@@ -345,7 +345,7 @@ extension VideoConverterVM {
             animation.beginTime = AVCoreAnimationBeginTimeAtZero
             animation.duration = UserDefaultsManager.shared.selectedTransitionDuration!
             animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
-            animation.isRemovedOnCompletion = true
+            animation.isRemovedOnCompletion = false
             animationLayer.add(animation, forKey: "animation")
             
             // Hide animation layer after it completion
@@ -358,7 +358,7 @@ extension VideoConverterVM {
             hideAnimation.isRemovedOnCompletion = false
             animationLayer.add(hideAnimation, forKey: "animateOpacity")
             
-            parentLayer.addSublayer(animationLayer)
+            parentLayer.insertSublayer(animationLayer, above: parentLayer)
         }
 
         //create the composition and add the instructions to insert the layer:

@@ -32,7 +32,7 @@ class MultipleVideoConverter {
     
     // Create the list of paths to movie files that generated movie will transition between.
     // The movies need to not have any copy protection.
-    let movieFilePaths = [
+    private static let movieFilePaths = [
         "~/Movies/clips/410_clip1.mov",
         "~/Movies/clips/410_clip2.mov",
         "~/Movies/clips/410_clip3.mov",
@@ -42,12 +42,12 @@ class MultipleVideoConverter {
     ]
     
     // Convert the file paths into URLS after expanding any tildes in the path
-    let urls = movieFilePaths.map({ (filePath) -> URL in
+    private static let urls = movieFilePaths.map({ (filePath) -> URL in
         return URL(fileURLWithPath: filePath, isDirectory: false)
     })
     
     // Make movie assets from the URLs.
-    let movieAssets:[AVURLAsset] = urls.map { AVURLAsset(url: $0, options: .none) }
+    let movieAssets: [AVURLAsset] = urls.map { AVURLAsset(url: $0, options: .none) }
     
     // Create the mutable composition that we are going to build up.
     var composition = AVMutableComposition()
