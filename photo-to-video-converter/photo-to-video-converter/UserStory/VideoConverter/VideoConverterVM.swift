@@ -18,7 +18,7 @@ protocol VideoConverterVMDelegate: class {
     func didFetchVideoURL(url: URL)
 }
 
-class VideoConverterVM: NSObject {
+class VideoConverterVM {
     
     weak var delegate: VideoConverterVMDelegate?
     
@@ -46,8 +46,6 @@ class VideoConverterVM: NSObject {
     private var videoFrameDuration = UserDefaultsManager.shared.selectedTransitionDuration ?? 1.0
     private let videoOutputSize = CGSize(width: 1280, height: 720)
     private let videoFPS: Int32 = 30
-    
-    private let animationLayer = CALayer()
     
     func convertVideo() {
         
@@ -332,11 +330,11 @@ extension VideoConverterVM {
         videoLayer.frame = CGRect(origin: CGPoint.zero, size: videoSize)
         parentLayer.addSublayer(videoLayer)
         
-        for index in 1...2/*UserDefaultsManager.shared.selectedImagesCount!*/ {
+        for index in 0...UserDefaultsManager.shared.selectedImagesCount! - 1 {
             // create the layer with the animation
-//            let animationLayer = CALayer()
-            animationLayer.contents = videoAsset.getImage(at: CMTime(value: Int64(videoFPS * Int32(index)),
-                                                                     timescale: videoFPS))?.cgImage
+            let animationLayer = CALayer()
+            let nextSceneTime = CMTime(value: Int64(videoFPS * Int32(index) / 2), timescale: videoFPS)
+            animationLayer.contents = videoAsset.getImage(at: nextSceneTime)?.cgImage
             animationLayer.frame = CGRect(origin: CGPoint.zero, size: videoSize)
             animationLayer.masksToBounds = true
             let animation = CATransition()
@@ -347,20 +345,20 @@ extension VideoConverterVM {
             animation.beginTime = AVCoreAnimationBeginTimeAtZero
             animation.duration = UserDefaultsManager.shared.selectedTransitionDuration!
             animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
-            animation.isRemovedOnCompletion = true
+            animation.isRemovedOnCompletion = false
             animationLayer.add(animation, forKey: "animation")
             
             // Hide animation layer after it completion
             let hideAnimation = CABasicAnimation(keyPath: "opacity")
-            hideAnimation.duration = 0.0
+            hideAnimation.duration = CFTimeInterval(mixComposition.duration.value) - animation.duration
             // animate from fully visible to invisible
-            hideAnimation.fromValue = 1.0
+            hideAnimation.fromValue = 0.0
             hideAnimation.toValue = 0.0
             hideAnimation.beginTime = animation.duration
             hideAnimation.isRemovedOnCompletion = false
             animationLayer.add(hideAnimation, forKey: "animateOpacity")
             
-            parentLayer.addSublayer(animationLayer)
+            parentLayer.insertSublayer(animationLayer, above: parentLayer)
         }
 
         //create the composition and add the instructions to insert the layer:
@@ -368,13 +366,12 @@ extension VideoConverterVM {
         let videoComp: AVMutableVideoComposition = AVMutableVideoComposition()
         videoComp.renderSize = videoSize
         videoComp.frameDuration = CMTime(value: 1, timescale: videoFPS) // ALARM: most important part
-        videoComp.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer,
-                                                                      in: parentLayer)
+        videoComp.animationTool = AVVideoCompositionCoreAnimationTool(postProcessingAsVideoLayer: videoLayer, in: parentLayer)
         
         /// instruction
         let instruction: AVMutableVideoCompositionInstruction = AVMutableVideoCompositionInstruction()
         
-        instruction.timeRange = CMTimeRangeMake(start: CMTime.zero, duration: mixComposition.duration) // Time for layer will be displayed
+        instruction.timeRange = CMTimeRangeMake(start: CMTime.zero, duration: mixComposition.duration)
         guard let mixVideoTrack: AVAssetTrack = mixComposition.tracks(withMediaType: .video).first else {
             assertionFailure("Unable to video track")
             failure(getVideoTrackError)
