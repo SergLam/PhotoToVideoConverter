@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import Photos
 
-protocol VideoConverterVMDelegate: class {
+protocol VideoConverterVMDelegate: AnyObject {
     
     func didReceivedError(error: String)
     func didReceiveSuccess(message: String)

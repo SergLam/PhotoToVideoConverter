@@ -3,13 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		13A654F222C4A86B00B8418E /* MultipleVideoConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A654F122C4A86B00B8418E /* MultipleVideoConverter.swift */; };
 		13B1FB9322C2009800A2F5A3 /* NSError+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B1FB9222C2009800A2F5A3 /* NSError+Ext.swift */; };
-		1552422C7B21DE689773BB1F /* Pods_photo_to_video_converter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB4FE5C0D964F2118F31DC66 /* Pods_photo_to_video_converter.framework */; };
 		7C0444DA22BD77C500D31A58 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0444D922BD77C500D31A58 /* AppDelegate.swift */; };
 		7C0444DC22BD77C500D31A58 /* SelectImagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C0444DB22BD77C500D31A58 /* SelectImagesVC.swift */; };
 		7C0444DF22BD77C500D31A58 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7C0444DD22BD77C500D31A58 /* Main.storyboard */; };
@@ -31,12 +30,14 @@
 		7C6F876122C41950004AB72F /* AVURLAsset+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6F876022C41950004AB72F /* AVURLAsset+Ext.swift */; };
 		7CCA44A622BF94AA00F9AAA5 /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA44A522BF94AA00F9AAA5 /* LocalFileManager.swift */; };
 		7CCA44A822C016C500F9AAA5 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCA44A722C016C500F9AAA5 /* UIImage+Ext.swift */; };
+		C5C43D4D276A5FE80D33BB60 /* Pods_App_photo_to_video_converter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62A384C4ADB044D79C4C3403 /* Pods_App_photo_to_video_converter.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		01BB1C53AF16CD776E519B52 /* Pods-photo-to-video-converter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-photo-to-video-converter.debug.xcconfig"; path = "Target Support Files/Pods-photo-to-video-converter/Pods-photo-to-video-converter.debug.xcconfig"; sourceTree = "<group>"; };
 		13A654F122C4A86B00B8418E /* MultipleVideoConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleVideoConverter.swift; sourceTree = "<group>"; };
 		13B1FB9222C2009800A2F5A3 /* NSError+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+Ext.swift"; sourceTree = "<group>"; };
+		62A384C4ADB044D79C4C3403 /* Pods_App_photo_to_video_converter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_photo_to_video_converter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6309E77A7C7F4186E9B69746 /* Pods-photo-to-video-converter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-photo-to-video-converter.release.xcconfig"; path = "Target Support Files/Pods-photo-to-video-converter/Pods-photo-to-video-converter.release.xcconfig"; sourceTree = "<group>"; };
 		7C0444D622BD77C500D31A58 /* photo-to-video-converter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "photo-to-video-converter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C0444D922BD77C500D31A58 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -61,7 +62,8 @@
 		7C6F876022C41950004AB72F /* AVURLAsset+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVURLAsset+Ext.swift"; sourceTree = "<group>"; };
 		7CCA44A522BF94AA00F9AAA5 /* LocalFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
 		7CCA44A722C016C500F9AAA5 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
-		CB4FE5C0D964F2118F31DC66 /* Pods_photo_to_video_converter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_photo_to_video_converter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA1141C9A0835E29EF011904 /* Pods-App-photo-to-video-converter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-photo-to-video-converter.release.xcconfig"; path = "Target Support Files/Pods-App-photo-to-video-converter/Pods-App-photo-to-video-converter.release.xcconfig"; sourceTree = "<group>"; };
+		FF8F45AA6D2145ECC82D9D99 /* Pods-App-photo-to-video-converter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-photo-to-video-converter.debug.xcconfig"; path = "Target Support Files/Pods-App-photo-to-video-converter/Pods-App-photo-to-video-converter.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1552422C7B21DE689773BB1F /* Pods_photo_to_video_converter.framework in Frameworks */,
+				C5C43D4D276A5FE80D33BB60 /* Pods_App_photo_to_video_converter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,7 +202,7 @@
 		DE6EA1632F2A7C73B2AC8B77 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CB4FE5C0D964F2118F31DC66 /* Pods_photo_to_video_converter.framework */,
+				62A384C4ADB044D79C4C3403 /* Pods_App_photo_to_video_converter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -210,6 +212,8 @@
 			children = (
 				01BB1C53AF16CD776E519B52 /* Pods-photo-to-video-converter.debug.xcconfig */,
 				6309E77A7C7F4186E9B69746 /* Pods-photo-to-video-converter.release.xcconfig */,
+				FF8F45AA6D2145ECC82D9D99 /* Pods-App-photo-to-video-converter.debug.xcconfig */,
+				DA1141C9A0835E29EF011904 /* Pods-App-photo-to-video-converter.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -243,7 +247,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1020;
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = serglam;
 				TargetAttributes = {
 					7C0444D522BD77C500D31A58 = {
@@ -300,7 +304,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-photo-to-video-converter-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-App-photo-to-video-converter-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -313,15 +317,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-photo-to-video-converter/Pods-photo-to-video-converter-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-photo-to-video-converter/Pods-photo-to-video-converter-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-photo-to-video-converter/Pods-photo-to-video-converter-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-App-photo-to-video-converter/Pods-App-photo-to-video-converter-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -400,6 +402,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -409,6 +412,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -425,13 +429,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -461,6 +466,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -470,6 +476,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -480,25 +487,26 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		7C0444E922BD77C600D31A58 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 01BB1C53AF16CD776E519B52 /* Pods-photo-to-video-converter.debug.xcconfig */;
+			baseConfigurationReference = FF8F45AA6D2145ECC82D9D99 /* Pods-App-photo-to-video-converter.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MDWBDEPC5G;
 				INFOPLIST_FILE = "$(SRCROOT)/photo-to-video-converter/BundleFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -512,13 +520,13 @@
 		};
 		7C0444EA22BD77C600D31A58 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6309E77A7C7F4186E9B69746 /* Pods-photo-to-video-converter.release.xcconfig */;
+			baseConfigurationReference = DA1141C9A0835E29EF011904 /* Pods-App-photo-to-video-converter.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MDWBDEPC5G;
 				INFOPLIST_FILE = "$(SRCROOT)/photo-to-video-converter/BundleFiles/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

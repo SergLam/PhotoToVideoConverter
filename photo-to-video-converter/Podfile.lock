@@ -1,20 +1,21 @@
 PODS:
   - DZNEmptyDataSet (1.8.1)
-  - TLPhotoPicker (1.8.9)
+  - TLPhotoPicker (2.1.4)
 
 DEPENDENCIES:
-  - DZNEmptyDataSet
-  - TLPhotoPicker
+  - DZNEmptyDataSet (~> 1.8.1)
+  - TLPhotoPicker (~> 2.1.4)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - DZNEmptyDataSet
+  trunk:
     - TLPhotoPicker
 
 SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  TLPhotoPicker: 9bf255c116129bc5d709b4cc8b42b3542e89e841
+  TLPhotoPicker: f486e8499e1c3f464d0e886697635e25a72a52b8
 
-PODFILE CHECKSUM: a19f0b927a79817a2ff4a31c1c162f4b09551ef6
+PODFILE CHECKSUM: 1b68aa6923a9cce19d496693202bd3ad57148c0e
 
-COCOAPODS: 1.7.2
+COCOAPODS: 1.10.2
